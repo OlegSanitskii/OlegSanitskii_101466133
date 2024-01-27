@@ -7,6 +7,7 @@ namespace WebApplication2.Models
     {
 
         public int ProjectId { get; set; }
+
         [Required]
         public required string Name { get; set; }
         public string? Description { get; set; }

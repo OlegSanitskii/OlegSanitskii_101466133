@@ -4,3 +4,7 @@
 
 *.dll
 *.bin
+*.vsidx
+/.vs/WebApplication2/DesignTimeBuild
+/.vs/WebApplication2/v17
+/bin/Debug/net8.0
