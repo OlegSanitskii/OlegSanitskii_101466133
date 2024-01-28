@@ -26,18 +26,24 @@ namespace WebApplication2.Controllers
 
 
 
-
-        public IActionResult Details() 
+        [HttpGet]
+        public IActionResult Details(int id) 
         
         {
-            return View();
-        }
-        
+            var project = new Project { ProjectId = id, Name = "Project " + id, Description = "Deitails of Project " + id };
 
+            return View(project);
+           
+        }
+
+
+
+
+        
         public IActionResult Create()
         
         {
-            return View();
+            return View(); 
         }
 
     }
