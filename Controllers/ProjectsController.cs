@@ -4,12 +4,23 @@ using WebApplication2.Data;
 using Microsoft.EntityFrameworkCore;
 
 
+/*using Microsoft.CodeAnalysis;*/
+
+
 
 
 namespace WebApplication2.Controllers
 {
+
     public class ProjectsController : Controller
     {
+        private readonly AppDbContext _db;
+
+        public ProjectsController(AppDbContext db)
+        {
+            _db = db;
+
+        }
         /*private static List<Project> _projects = new List<Project>()
         {
             new Project { ProjectId = 1, Name = "Project 1", Description = "First Project" }
@@ -17,34 +28,127 @@ namespace WebApplication2.Controllers
 
         public IActionResult Index()
         {
-            return View(_db.projects.ToList());
+            return View(_db.Projects.ToList());
         }
 
-        [HttpGet]
+
+
+		[HttpGet]
+		public IActionResult Details(int id)
+		{
+			var project = _db.Projects.FirstOrDefault(p => p.ProjectId == id);
+			if (project == null)
+			{
+				return NotFound();
+			}
+			return View(project);
+		}
+
+
+		[HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Project project)
         {
-            if (project != null)
+            if (ModelState.IsValid)
             {
-                _projects.Add(project);
+                _db.Projects.Add(project);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return View(project);
         }
 
-        [HttpGet]
-        public IActionResult Details(int id)
+
+
+        public IActionResult Edit(int id)
         {
-            var project = _db.Projects.FirstOrDefault(p => p.ProjectId == id);
+            var project = _db.Projects.Find(id);
             if (project == null)
             {
                 return NotFound();
             }
             return View(project);
         }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+		public IActionResult Edit(int id, [Bind("ProjectId, Name, Description")] Project project)
+        {
+            if (id != project.ProjectId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _db.Update(project);
+                    _db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProjectExsists(project.ProjectId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+
+            }
+            return View(project);
+        }
+
+
+        private bool ProjectExsists(int id)
+        {
+            return _db.Projects.Any(e => e.ProjectId == id);
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            var project = _db.Projects.FirstOrDefault(p =>p.ProjectId == id);
+            if (project==null)
+            {
+                return NotFound();
+            }
+            return View(project);
+        }
+
+
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult DeleteConfirmed(int ProjectId)
+        {
+			var project = _db.Projects.Find(ProjectId);
+			if (project != null)
+            {
+                _db.Projects.Remove(project);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return NotFound();
+
+		}
+
+
+
+
     }
 }
