@@ -14,7 +14,8 @@ namespace WebApplication2.Migrations
                 name: "ProjectTasks",
                 columns: table => new
                 {
-                    ProjectTaskId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectTaskId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false)

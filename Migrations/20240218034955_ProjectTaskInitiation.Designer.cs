@@ -12,7 +12,7 @@ using WebApplication2.Data;
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240206154903_ProjectTaskInitiation")]
+    [Migration("20240218034955_ProjectTaskInitiation")]
     partial class ProjectTaskInitiation
     {
         /// <inheritdoc />
@@ -56,8 +56,11 @@ namespace WebApplication2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.ProjectTask", b =>
                 {
-                    b.Property<string>("ProjectTaskId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProjectTaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectTaskId"));
 
                     b.Property<string>("Description")
                         .IsRequired()

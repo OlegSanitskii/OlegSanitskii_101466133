@@ -53,8 +53,11 @@ namespace WebApplication2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.ProjectTask", b =>
                 {
-                    b.Property<string>("ProjectTaskId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProjectTaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectTaskId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
