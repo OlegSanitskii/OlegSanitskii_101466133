@@ -18,7 +18,7 @@ namespace WebApplication2.Models
         public DateTime EndDate { get; set; }
         public string? Status { get; set; }
 
-
+        public  List<ProjectTask>? Tasks { get; set; }
 
 
     }
