@@ -4,6 +4,9 @@
 
 	ViewData["Title"] = "Projects";
 
+	bool searchPerformed = ViewData["SearchPerformed]"] as bool? ?? false;
+	string searchString = ViewData["SearchString"] as string;
+
 
 }
 
@@ -58,13 +61,21 @@
 		</tbody>
 
 
-</table>
+	</table>
 }
 
 
 else
 {
-	<p> No projects</p>
+
+	if (searchPerformed)
+	{
+		<p>No project with name "@searchString".</p>
+	}
+	else
+	{
+		<p> No project available</p>
+	}
 }
 
 <p>

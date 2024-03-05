@@ -150,5 +150,31 @@ namespace WebApplication2.Controllers
 
 
 
+        [HttpGet("Search/{searchString?}")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var projectsQuery = from p in _db.Projects
+                                select p;
+
+            bool searchPerformed = !String.IsNullOrEmpty(searchString);
+
+            if (searchPerformed)
+            {
+                projectsQuery = projectsQuery.Where(p => p.Name.Contains(searchString)
+                                || p.Description.Contains(searchString));
+            }
+
+            var projects = await projectsQuery.ToListAsync();
+            ViewData["SearchPerformed"] = searchPerformed;
+            ViewData["SearchString"] = searchString;
+            return View("Index", projects); 
+
+
+
+
+
+
+
+
     }
 }

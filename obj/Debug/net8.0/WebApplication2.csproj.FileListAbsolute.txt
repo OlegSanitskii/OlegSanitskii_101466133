@@ -256,7 +256,7 @@ D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\staticwebassets.p
 D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\scopedcss\bundle\WebApplication2.styles.css
 D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\scopedcss\projectbundle\WebApplication2.bundle.scp.css
-D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\WebApplication2.csproj.CopyComplete
 D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\WebApplication2.pdb
 D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\WebApplication2.genruntimeconfig.cache
 D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\ref\WebApplication2.dll
+D:\GBCterm4\Comp2139(C#)Term4\WebApplication2\obj\Debug\net8.0\WebAppli.0DB3FC1A.Up2Date

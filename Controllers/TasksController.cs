@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication2.Controllers
 {
+
+
+    [Route("Tasks")]
     public class TasksController : Controller
     {
         private readonly AppDbContext _db;
@@ -20,7 +23,7 @@ namespace WebApplication2.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet("Index/{projectId:int}")]
         public IActionResult Index(int projectId)
         {
             var tasks = _db.ProjectTasks
@@ -35,7 +38,7 @@ namespace WebApplication2.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet("Details/{id:int}")]
 
         public IActionResult Details(int id)
 
@@ -53,7 +56,7 @@ namespace WebApplication2.Controllers
         }
 
 
-
+        [HttpGet("Create/{projectId:int}")]
         public IActionResult Create(int projectId)
         {
             var project = _db.Projects.Find(projectId);
@@ -72,7 +75,7 @@ namespace WebApplication2.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Create/{projectId:int}")]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Title", "Description", "ProjectId")] ProjectTask task)
         {
@@ -89,7 +92,7 @@ namespace WebApplication2.Controllers
 
 
 
-
+        [HttpGet("Edit/{id:int}")]
         public IActionResult Edit(int id)
         {
             var task = _db.ProjectTasks
@@ -108,7 +111,7 @@ namespace WebApplication2.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
 
         public IActionResult Edit(int id, [Bind("ProjectTaskId", "Title", "Description", "ProjectId")] ProjectTask task)
@@ -130,7 +133,7 @@ namespace WebApplication2.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("Delete/{id:int}")]
         public IActionResult Delete(int id)
         {
             var task = _db.ProjectTasks
@@ -146,7 +149,7 @@ namespace WebApplication2.Controllers
         }
 
 
-        [HttpPost, ActionName("DeleteConfirmed")]
+        [HttpPost("DeleteConfirmed/{id:int}"), ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
 
         public IActionResult DeleteConfirmed(int ProjectTaskId)
@@ -163,5 +166,24 @@ namespace WebApplication2.Controllers
         }
 
 
-    }
+       
+		[HttpGet("Search/{projectId:int}/{searchString?}")]
+		public async Task<IActionResult> Search(int projectId, string searchString)
+		{
+			// var tasksQuery = _db.ProjectTasks.Where(t => t.ProjectId == projectId);
+			var tasksQuery = _db.ProjectTasks.AsQueryable();
+
+			if (!String.IsNullOrEmpty(searchString))
+			{
+				tasksQuery = tasksQuery.Where(t => t.Title.Contains(searchString)
+												   || t.Description.Contains(searchString));
+			}
+
+			var tasks = await tasksQuery.ToListAsync();
+			ViewBag.ProjectId = projectId; // To keep track of the current project
+			return View("Index", tasks); // Reuse the Index view to display results
+		}
+
+
+	}
 }

@@ -20,3 +20,24 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+
+/* Lab 5 - Dropdown Styling */
+/* Custom Dropdown Style */
+.navbar .dropdown-toggle {
+    color: white;
+    background-color: #007bff; /* Example color */
+    border-color: #007bff; /* Example border */
+}
+
+    /* Change color on hover */
+    .navbar .dropdown-toggle:hover {
+        color: #007bff;
+        background-color: white;
+    }
+
+/*.btn {
+  color: black;
+  background-color: cadetblue;
+}*/
