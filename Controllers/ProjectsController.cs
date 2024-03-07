@@ -6,11 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 /*using Microsoft.CodeAnalysis;*/
 
-
-
-
 namespace WebApplication2.Controllers
 {
+
+    [Route("Projects")]
 
     public class ProjectsController : Controller
     {
@@ -26,6 +25,9 @@ namespace WebApplication2.Controllers
             new Project { ProjectId = 1, Name = "Project 1", Description = "First Project" }
         };*/
 
+
+
+        [HttpGet("")]
         public IActionResult Index()
         {
             return View(_db.Projects.ToList());
@@ -33,25 +35,26 @@ namespace WebApplication2.Controllers
 
 
 
-		[HttpGet]
-		public IActionResult Details(int id)
-		{
-			var project = _db.Projects.FirstOrDefault(p => p.ProjectId == id);
-			if (project == null)
-			{
-				return NotFound();
-			}
-			return View(project);
-		}
+        [HttpGet("Details/{id:int}")]
+        public IActionResult Details(int id)
+        {
+            var project = _db.Projects.FirstOrDefault(p => p.ProjectId == id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+            return View(project);
+        }
 
 
-		[HttpGet]
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Project project)
         {
@@ -65,7 +68,7 @@ namespace WebApplication2.Controllers
         }
 
 
-
+        [HttpGet("Edit/{id:int}")]
         public IActionResult Edit(int id)
         {
             var project = _db.Projects.Find(id);
@@ -78,9 +81,9 @@ namespace WebApplication2.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
-		public IActionResult Edit(int id, [Bind("ProjectId, Name, Description, StartDate, EndDate, Status")] Project project)
+        public IActionResult Edit(int id, [Bind("ProjectId, Name, Description, StartDate, EndDate, Status")] Project project)
         {
             if (id != project.ProjectId)
             {
@@ -118,10 +121,11 @@ namespace WebApplication2.Controllers
         }
 
 
+        [HttpGet("Delete/{id:int}")]
         public IActionResult Delete(int id)
         {
-            var project = _db.Projects.FirstOrDefault(p =>p.ProjectId == id);
-            if (project==null)
+            var project = _db.Projects.FirstOrDefault(p => p.ProjectId == id);
+            if (project == null)
             {
                 return NotFound();
             }
@@ -129,14 +133,14 @@ namespace WebApplication2.Controllers
         }
 
 
-
+        [HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
 
         public IActionResult DeleteConfirmed(int ProjectId)
         {
-			var project = _db.Projects.Find(ProjectId);
-			if (project != null)
+            var project = _db.Projects.Find(ProjectId);
+            if (project != null)
             {
                 _db.Projects.Remove(project);
                 _db.SaveChanges();
@@ -145,7 +149,7 @@ namespace WebApplication2.Controllers
 
             return NotFound();
 
-		}
+        }
 
 
 
@@ -167,7 +171,7 @@ namespace WebApplication2.Controllers
             var projects = await projectsQuery.ToListAsync();
             ViewData["SearchPerformed"] = searchPerformed;
             ViewData["SearchString"] = searchString;
-            return View("Index", projects); 
+            return View("Index", projects);
 
 
 
@@ -176,5 +180,6 @@ namespace WebApplication2.Controllers
 
 
 
+        }
     }
 }
