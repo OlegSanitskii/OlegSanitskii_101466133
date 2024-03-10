@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication2.Models;
 using WebApplication2.Data;
 using Microsoft.EntityFrameworkCore;
+using WebApplication2.Areas.ProjectManagement.Models;
 
 
 /*using Microsoft.CodeAnalysis;*/
 
-namespace WebApplication2.Controllers
+namespace WebApplication2.Areas.ProjectManagement.Controllers
 {
 
-    [Route("Projects")]
+    [Area("ProjectManagement")]
+    [Route("[area]/[controller]/[action]")]
 
     public class ProjectsController : Controller
     {
@@ -160,7 +161,7 @@ namespace WebApplication2.Controllers
             var projectsQuery = from p in _db.Projects
                                 select p;
 
-            bool searchPerformed = !String.IsNullOrEmpty(searchString);
+            bool searchPerformed = !string.IsNullOrEmpty(searchString);
 
             if (searchPerformed)
             {

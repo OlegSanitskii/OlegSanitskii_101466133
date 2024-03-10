@@ -31,6 +31,9 @@
 					Description
 				</td>
 
+				<td>
+					Summary
+				</td>
 
 				<td>
 					Actions
@@ -46,13 +49,19 @@
 			@foreach (var project in Model)
 			{<tr>
 				<td> @project.ProjectId</td>
-				<td> @project.Name</td>
-					<td>@project.Description</td>
-					<td>
-						<a asp-action="Details" asp-route-id="@project.ProjectId" class="btn btn-info">Details</a> 
-						<a asp-action="Delete" asp-route-id="@project.ProjectId" class="btn btn-danger">Delete</a> 
-						<a asp-controller="Tasks" asp-action="Index" asp-route-projectId="@project.ProjectId" class="btn btn-warning">View Tasks</a>
-					</td>
+				<td> @project.Name</td>				
+				<td>@project.Description</td>
+				
+				<td>
+					@await Component.InvokeAsync("ProjectSummary", new { projectId = project.ProjectId })
+				</td>
+
+
+				<td>
+					<a asp-action="Details" asp-route-id="@project.ProjectId" class="btn btn-info">Details</a> 
+					<a asp-action="Delete" asp-route-id="@project.ProjectId" class="btn btn-danger">Delete</a> 
+					<a asp-controller="Tasks" asp-action="Index" asp-route-projectId="@project.ProjectId" class="btn btn-warning">View Tasks</a>
+				</td>
 
 
 			</tr>
@@ -80,5 +89,4 @@ else
 
 <p>
 	<a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Create">Create Project</a>
-	<
 </p>

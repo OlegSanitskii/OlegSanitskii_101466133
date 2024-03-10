@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Data;
 using Microsoft.EntityFrameworkCore;
-using WebApplication2.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WebApplication2.Areas.ProjectManagement.Models;
 
 
 
-namespace WebApplication2.Controllers
+namespace WebApplication2.Areas.ProjectManagement.Controllers
 {
 
 
-    [Route("Tasks")]
+    [Area("ProjectManagement")]
+    [Route("[area]/[controller]/[action]")]
     public class TasksController : Controller
     {
         private readonly AppDbContext _db;
@@ -166,24 +167,24 @@ namespace WebApplication2.Controllers
         }
 
 
-       
-		[HttpGet("Search/{projectId:int}/{searchString?}")]
-		public async Task<IActionResult> Search(int projectId, string searchString)
-		{
-			// var tasksQuery = _db.ProjectTasks.Where(t => t.ProjectId == projectId);
-			var tasksQuery = _db.ProjectTasks.AsQueryable();
 
-			if (!String.IsNullOrEmpty(searchString))
-			{
-				tasksQuery = tasksQuery.Where(t => t.Title.Contains(searchString)
-												   || t.Description.Contains(searchString));
-			}
+        [HttpGet("Search/{projectId:int}/{searchString?}")]
+        public async Task<IActionResult> Search(int projectId, string searchString)
+        {
+            // var tasksQuery = _db.ProjectTasks.Where(t => t.ProjectId == projectId);
+            var tasksQuery = _db.ProjectTasks.AsQueryable();
 
-			var tasks = await tasksQuery.ToListAsync();
-			ViewBag.ProjectId = projectId; // To keep track of the current project
-			return View("Index", tasks); // Reuse the Index view to display results
-		}
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tasksQuery = tasksQuery.Where(t => t.Title.Contains(searchString)
+                                                   || t.Description.Contains(searchString));
+            }
+
+            var tasks = await tasksQuery.ToListAsync();
+            ViewBag.ProjectId = projectId; // To keep track of the current project
+            return View("Index", tasks); // Reuse the Index view to display results
+        }
 
 
-	}
+    }
 }

@@ -1,18 +1,17 @@
-﻿@model WebApplication2.Models.Project
+﻿@model Project
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
 <h4>Project</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProjectId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -39,27 +38,16 @@
 
                 <select asp-for="Status" class="form-control">
                     <option value="">Select a status</option>
-                    @{
-                        var statuses = new List<string> { "New", "In Progress", "Complete" };
-                        foreach (var status in statuses)
-                        {
-                            if (Model.Status == status)
-                            {
-                                <option value="@status" selected>@status</option>
-                            }
-                            else
-                            {
-                                <option value="@status">@status</option>
-                            }
-                        }
-                    }
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Complete">Complete</option>
                 </select>
 
 
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

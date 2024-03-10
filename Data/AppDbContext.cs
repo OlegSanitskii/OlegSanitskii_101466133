@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
-using WebApplication2.Models;
+using WebApplication2.Areas.ProjectManagement.Models;
 
 
 namespace WebApplication2.Data
