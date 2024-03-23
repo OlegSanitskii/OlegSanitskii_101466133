@@ -35,13 +35,13 @@ namespace WebApplication2.Controllers
         {
             if (searchType == "Projects")
             {
-                return RedirectToAction("Search", "Projects", new { searchString });
+                return RedirectToAction("Search", "Projects", new { searchString, area = "ProjectManagement" });
             }
             else if (searchType == "Tasks")
             {
 
                 int defaultProjectId = 1;
-                return RedirectToAction("Search", "Tasks", new { projectId = defaultProjectId, searchString });
+                return RedirectToAction("Search", "Tasks", new { projectId = defaultProjectId, searchString, area = "ProjectManagement" });
             }
 
             return RedirectToAction("Index", "Home");
