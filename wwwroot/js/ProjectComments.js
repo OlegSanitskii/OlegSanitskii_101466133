@@ -9,6 +9,7 @@ function loadComments(projectId) {
                 // alert(data[i]);
                 commentsHtml += '<div class="comment">';
                 commentsHtml += '<p>' + data[i].content + '</p>';
+                commentsHtml += '<span>Posted on: ' + new Date(data[i].createdDate).toLocaleString() + '</span>';
                 commentsHtml += '</div>';
             }
             $('#commentsList').html(commentsHtml);
