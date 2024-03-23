@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vGNKssUz2AOHypqrJJvcA0Id99i5W+yLv4oSF5ZYPtE=",
+  "Hash": "zYhTgbStdzQuX5/9Hjkgr+XoCeX1d/NOv1edgLM9N84=",
   "Source": "WebApplication2",
   "BasePath": "_content/WebApplication2",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\GBCterm4\\Comp2139(C#)Term4\\WebApplication2\\wwwroot\\js\\ProjectComments.js",
+      "SourceId": "WebApplication2",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\GBCterm4\\Comp2139(C#)Term4\\WebApplication2\\wwwroot\\",
+      "BasePath": "_content/WebApplication2",
+      "RelativePath": "js/ProjectComments.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\ProjectComments.js"
     },
     {
       "Identity": "D:\\GBCterm4\\Comp2139(C#)Term4\\WebApplication2\\wwwroot\\js\\site.js",

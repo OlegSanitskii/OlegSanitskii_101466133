@@ -25,47 +25,49 @@ namespace WebApplication2.Areas.ProjectManagement.Controllers
 
 
         [HttpGet("Index/{projectId:int}")]
-        public IActionResult Index(int projectId)
+        public async Task<ActionResult> Index(int? projectId)
         {
-            var tasks = _db.ProjectTasks
-                .Where(t => t.ProjectId == projectId)
-                .ToList();
+            var tasksQuery = _db.ProjectTasks.AsQueryable();
 
+            if (projectId.HasValue)
+            {
+                tasksQuery = tasksQuery.Where(t => t.ProjectId == projectId.Value);
+            }
 
-            ViewBag.ProjectId = projectId;
+            var tasks = await tasksQuery.ToListAsync();
+            ViewBag.ProjectId = projectId;  // Store projectId in ViewBag
             return View(tasks);
         }
 
 
 
 
+        // GET: Tasks/Details/{id}
         [HttpGet("Details/{id:int}")]
-
-        public IActionResult Details(int id)
-
+        public async Task<ActionResult> Details(int id)
         {
-            var task = _db.ProjectTasks
-                .Include(t => t.Project)
-                .FirstOrDefault(t => t.ProjectTaskId == id);
+            var task = await _db.ProjectTasks
+                .Include(t => t.Project) // Include related project data
+                .FirstOrDefaultAsync(t => t.ProjectTaskId == id);
 
             if (task == null)
             {
                 return NotFound();
             }
-            return View(task);
 
+            return View(task);
         }
 
 
+        // GET: Tasks/Create/{projectId}
         [HttpGet("Create/{projectId:int}")]
-        public IActionResult Create(int projectId)
+        public async Task<ActionResult> Create(int projectId)
         {
-            var project = _db.Projects.Find(projectId);
+            var project = await _db.Projects.FindAsync(projectId);
             if (project == null)
             {
-                return NotFound();
+                return NotFound(); // Or handle appropriately if project doesn't exist
             }
-
 
             var task = new ProjectTask
             {
@@ -76,46 +78,56 @@ namespace WebApplication2.Areas.ProjectManagement.Controllers
         }
 
 
+        // POST: Tasks/Create
         [HttpPost("Create/{projectId:int}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title", "Description", "ProjectId")] ProjectTask task)
+        public async Task<IActionResult> Create([Bind("Title", "Description", "ProjectId")] ProjectTask task)
         {
             if (ModelState.IsValid)
             {
-                _db.ProjectTasks.Add(task);
-                _db.SaveChanges();
+                await _db.ProjectTasks.AddAsync(task);
+                await _db.SaveChangesAsync();
+                // Redirect to the Index action with the projectId of the created task
                 return RedirectToAction(nameof(Index), new { projectId = task.ProjectId });
             }
 
-            ViewBag.Projects = new SelectList(_db.Projects, "ProjectId", "Name", task.ProjectId);
+            // Async call to retrieve projects for SelectList
+            var projects = await _db.Projects.ToListAsync();
+
+            // Repopulate the Projects SelectList if returning to the form
+            ViewBag.Projects = new SelectList(projects, "ProjectId", "Name", task.ProjectId);
             return View(task);
         }
 
 
 
+        // GET: Tasks/Edit/{id}
         [HttpGet("Edit/{id:int}")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var task = _db.ProjectTasks
-                .Include(t => t.Project)
-                .FirstOrDefault(t => t.ProjectTaskId == id);
-
+            var task = await _db.ProjectTasks
+                .Include(t => t.Project) // Include related project data
+                .FirstOrDefaultAsync(t => t.ProjectTaskId == id);
 
             if (task == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Projects = new SelectList(_db.Projects, "ProjectId", "Name", task.ProjectId);
+            // Async call to retrieve projects for SelectList
+            var projects = await _db.Projects.ToListAsync();
+
+            // Repopulate the Projects SelectList if returning to the form
+            ViewBag.Projects = new SelectList(projects, "ProjectId", "Name", task.ProjectId);
             return View(task);
         }
 
 
 
+        // POST: Tasks/Edit/{id}
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
-
-        public IActionResult Edit(int id, [Bind("ProjectTaskId", "Title", "Description", "ProjectId")] ProjectTask task)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectTaskId", "Title", "Description", "ProjectId")] ProjectTask task)
         {
             if (id != task.ProjectTaskId)
             {
@@ -125,21 +137,25 @@ namespace WebApplication2.Areas.ProjectManagement.Controllers
             if (ModelState.IsValid)
             {
                 _db.Update(task);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { projectId = task.ProjectId });
             }
 
-            ViewBag.Projects = new SelectList(_db.Projects, "ProjectId", "Name", task.ProjectId);
+            // Async call to retrieve projects for SelectList
+            var projects = await _db.Projects.ToListAsync();
+
+            ViewBag.Projects = new SelectList(projects, "ProjectId", "Name", task.ProjectId);
             return View(task);
         }
 
 
+        // GET: Tasks/Delete/{id}
         [HttpGet("Delete/{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var task = _db.ProjectTasks
-                .Include(t => t.Project)
-                .FirstOrDefault(t => t.ProjectTaskId == id);
+            var task = await _db.ProjectTasks
+                .Include(t => t.Project) // Include related project data
+                .FirstOrDefaultAsync(t => t.ProjectTaskId == id);
 
             if (task == null)
             {
@@ -150,19 +166,19 @@ namespace WebApplication2.Areas.ProjectManagement.Controllers
         }
 
 
-        [HttpPost("DeleteConfirmed/{id:int}"), ActionName("DeleteConfirmed")]
-        [ValidateAntiForgeryToken]
 
-        public IActionResult DeleteConfirmed(int ProjectTaskId)
+        // POST: Tasks/DeleteConfirmed/{id}
+        [HttpPost("DeleteConfirmed/{id:int}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int ProjectTaskId)
         {
-            var task = _db.ProjectTasks.Find(ProjectTaskId);
+            var task = await _db.ProjectTasks.FindAsync(ProjectTaskId);
             if (task != null)
             {
                 _db.ProjectTasks.Remove(task);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { projectId = task.ProjectId });
             }
-
             return NotFound();
         }
 

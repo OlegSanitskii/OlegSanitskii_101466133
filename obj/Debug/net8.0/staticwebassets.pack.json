@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\GBCterm4\\Comp2139(C#)Term4\\WebApplication2\\wwwroot\\js\\ProjectComments.js",
+      "PackagePath": "staticwebassets\\js\\ProjectComments.js"
+    },
+    {
       "Id": "D:\\GBCterm4\\Comp2139(C#)Term4\\WebApplication2\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
