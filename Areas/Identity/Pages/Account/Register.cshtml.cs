@@ -43,7 +43,7 @@ namespace WebApplication2.Areas.Identity.Pages.Account
             _userStore = userStore;
             // _emailStore = GetEmailStore();
             _signInManager = signInManager;
-            logger = logger;
+            _logger = logger;
             _emailSender = emailSender;
         }
 
