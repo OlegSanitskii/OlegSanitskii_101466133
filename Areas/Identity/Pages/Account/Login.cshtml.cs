@@ -69,7 +69,7 @@ namespace WebApplication2.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
+            [DataType (DataType.Text)]
             [Display(Name = "Email / Username")]
             public string Email { get; set; }
 
@@ -119,8 +119,7 @@ namespace WebApplication2.Areas.Identity.Pages.Account
                 var username = Input.Email;
                 if (IsValidEmail(Input.Email))
                 {
-                    var user =
-                        await _userManager.FindByEmailAsync(Input.Email);
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
 
                     if (user != null)
                     {
@@ -132,7 +131,7 @@ namespace WebApplication2.Areas.Identity.Pages.Account
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

@@ -32,6 +32,14 @@ namespace WebApplication2.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public string Username { get; set; }
 
+
+        //lab10
+        [TempData]
+        public string UserChangeLimitStatusMessage { get; set; }
+        //lab10
+
+
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -120,6 +128,10 @@ namespace WebApplication2.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            //lab10
+            UserChangeLimitStatusMessage = $"You can change your username {user.UserNameChangeLimit} more times";
+            //lab10
+
             await LoadAsync(user);
             return Page();
         }
@@ -161,7 +173,20 @@ namespace WebApplication2.Areas.Identity.Pages.Account.Manage
                         StatusMessage = "Error: username already taken. Please choose a different username";
                         return RedirectToPage();
                     }
+
+
+                    // lab 10
+                    var setUserName = await _userManager.SetUserNameAsync(user, Input.Username);
+                    if (!setUserName.Succeeded)
+                    {
+                        StatusMessage = "Unexpected error when trying to set the user name";
+                        return RedirectToPage();
+                    }
+                    // lab10
+
+
                     else
+
                     {
                         user.UserName = Input.Username;
                         user.UserNameChangeLimit -= 1;
@@ -184,7 +209,7 @@ namespace WebApplication2.Areas.Identity.Pages.Account.Manage
                 await _userManager.UpdateAsync(user);
             }
 
-
+            //lab 10
             if (Request.Form.Files.Count > 0)
             {
                 IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -195,8 +220,12 @@ namespace WebApplication2.Areas.Identity.Pages.Account.Manage
                 }
                 await _userManager.UpdateAsync(user);
             }
+            //lab10
+
+
 
             //lab9
+
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
